@@ -25,4 +25,3 @@ def test_init_successful_connection() -> None:
         assert (
             connection_successful
         ), "The database connection should be successful and not raise an exception."
-
