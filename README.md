@@ -1,5 +1,18 @@
 # PathFinder
 
+## Contributors
+
+- [Kristijan Boshev](https://github.com/KristijanBoshev)
+- [Bojana](https://github.com/BojanaAri) 
+- [Sanja Trajkovska](https://github.com/sanjatrajkovska) 
+- [Jovan Stojanovski](https://github.com/LynXeEn) 
+- [Leonid](https://github.com/le0nid36) 
+- [Damjan Dodevski](https://github.com/DameDode)
+- [R Janev](https://github.com/rjanev) 
+- [Monika Caneva](https://github.com/monikacaneva)
+- [Nikola Trajkovski](https://github.com/nikitrajkovski)
+- [Wiz Ricky](https://github.com/wizricky)
+
 ## Project Overview
 
 PathFinder is a project developed for the UIKTP class that aims to determine the next chapter of every high schooler's journey by suggesting career paths based on their previous knowledge, skills, and interests. The system provides personalized recommendations to help students make informed decisions about their future education and career options.
