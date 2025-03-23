@@ -1,4 +1,21 @@
-# Full Stack FastAPI Template
+# PathFinder
+
+## Contributors
+
+- [Kristijan Boshev](https://github.com/KristijanBoshev)
+- [Bojana](https://github.com/BojanaAri) 
+- [Sanja Trajkovska](https://github.com/sanjatrajkovska) 
+- [Jovan Stojanovski](https://github.com/LynXeEn) 
+- [Leonid](https://github.com/le0nid36) 
+- [Damjan Dodevski](https://github.com/DameDode)
+- [R Janev](https://github.com/rjanev) 
+- [Monika Caneva](https://github.com/monikacaneva)
+- [Nikola Trajkovski](https://github.com/nikitrajkovski)
+- [Wiz Ricky](https://github.com/wizricky)
+
+## Project Overview
+
+PathFinder is a project developed for the UIKTP class that aims to determine the next chapter of every high schooler's journey by suggesting career paths based on their previous knowledge, skills, and interests. The system provides personalized recommendations to help students make informed decisions about their future education and career options.
 
 <a href="https://github.com/fastapi/full-stack-fastapi-template/actions?query=workflow%3ATest" target="_blank"><img src="https://github.com/fastapi/full-stack-fastapi-template/workflows/Test/badge.svg" alt="Test"></a>
 <a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/fastapi/full-stack-fastapi-template" target="_blank"><img src="https://coverage-badge.samuelcolvin.workers.dev/fastapi/full-stack-fastapi-template.svg" alt="Coverage"></a>
@@ -68,7 +85,7 @@ But you can do the following:
 - Clone this repository manually, set the name with the name of the project you want to use, for example `my-full-stack`:
 
 ```bash
-git clone git@github.com:fastapi/full-stack-fastapi-template.git my-full-stack
+git clone https://github.com/KristijanBoshev/PathFinder.git my-full-stack
 ```
 
 - Enter into the new directory:
@@ -80,13 +97,13 @@ cd my-full-stack
 - Set the new origin to your new repository, copy it from the GitHub interface, for example:
 
 ```bash
-git remote set-url origin git@github.com:octocat/my-full-stack.git
+git remote set-url origin https://github.com/YourUsername/my-full-stack.git
 ```
 
 - Add this repo as another "remote" to allow you to get updates later:
 
 ```bash
-git remote add upstream git@github.com:fastapi/full-stack-fastapi-template.git
+git remote add upstream https://github.com/KristijanBoshev/PathFinder.git
 ```
 
 - Push the code to your new repository:
@@ -104,10 +121,10 @@ After cloning the repository, and after doing changes, you might want to get the
 ```bash
 git remote -v
 
-origin    git@github.com:octocat/my-full-stack.git (fetch)
-origin    git@github.com:octocat/my-full-stack.git (push)
-upstream    git@github.com:fastapi/full-stack-fastapi-template.git (fetch)
-upstream    git@github.com:fastapi/full-stack-fastapi-template.git (push)
+origin    git@github.com:YourUsername/my-full-stack.git (fetch)
+origin    git@github.com:YourUsername/my-full-stack.git (push)
+upstream    git@github.com:KristijanBoshev/PathFinder.git (fetch)
+upstream    git@github.com:KristijanBoshev/PathFinder.git (push)
 ```
 
 - Pull the latest changes without merging:
@@ -181,13 +198,13 @@ Decide a name for your new project's directory, you will use it below. For examp
 Go to the directory that will be the parent of your project, and run the command with your project's name:
 
 ```bash
-copier copy https://github.com/fastapi/full-stack-fastapi-template my-awesome-project --trust
+copier copy https://github.com/KristijanBoshev/PathFinder.git my-awesome-project --trust
 ```
 
 If you have `pipx` and you didn't install `copier`, you can run it directly:
 
 ```bash
-pipx run copier copy https://github.com/fastapi/full-stack-fastapi-template my-awesome-project --trust
+pipx run copier copy https://github.com/KristijanBoshev/PathFinder.git my-awesome-project --trust
 ```
 
 **Note** the `--trust` option is necessary to be able to execute a [post-creation script](https://github.com/fastapi/full-stack-fastapi-template/blob/master/.copier/update_dotenv.py) that updates your `.env` files.
