@@ -5,6 +5,7 @@ from fastapi import APIRouter, HTTPException
 from sqlmodel import func, select
 
 from app.api.deps import CurrentUser, SessionDep
+from app.crud import fetch_questions
 from app.models import Item, ItemCreate, ItemPublic, ItemsPublic, ItemUpdate, Message
 
 router = APIRouter(prefix="/items", tags=["items"])
@@ -107,3 +108,20 @@ def delete_item(
     session.delete(item)
     session.commit()
     return Message(message="Item deleted successfully")
+
+
+@router.get("/quizzes/start")
+def start_quizz(session: SessionDep) -> list[Item]:
+    """
+    Fetch questions for quizzes.
+    """
+    questions = fetch_questions(session=session)
+    if not questions:
+        raise HTTPException(status_code=404, detail="No questions found")
+
+    # Flatten the list of questions
+    all_questions: list[Item] = []
+    for q in questions.values():
+        all_questions.extend(q)
+
+    return all_questions
