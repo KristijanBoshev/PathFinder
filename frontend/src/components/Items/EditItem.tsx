@@ -3,15 +3,18 @@ import {
   ButtonGroup,
   DialogActionTrigger,
   Input,
+  Portal,
+  Select,
   Text,
   VStack,
+  createListCollection,
 } from "@chakra-ui/react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
-import { type SubmitHandler, useForm } from "react-hook-form"
+import { Controller, type SubmitHandler, useForm } from "react-hook-form"
 import { FaExchangeAlt } from "react-icons/fa"
 
-import { type ApiError, type ItemPublic, ItemsService } from "@/client"
+import { type ApiError, type ItemPublic, ItemsService, TopicType } from "@/client"
 import useCustomToast from "@/hooks/useCustomToast"
 import { handleError } from "@/utils"
 import {
@@ -33,6 +36,7 @@ interface EditItemProps {
 interface ItemUpdateForm {
   title: string
   description?: string
+  topic?: TopicType
 }
 
 const EditItem = ({ item }: EditItemProps) => {
@@ -43,13 +47,15 @@ const EditItem = ({ item }: EditItemProps) => {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<ItemUpdateForm>({
     mode: "onBlur",
     criteriaMode: "all",
     defaultValues: {
-      ...item,
+      title: item.title,
       description: item.description ?? undefined,
+      topic: item.topic,
     },
   })
 
@@ -58,7 +64,11 @@ const EditItem = ({ item }: EditItemProps) => {
       ItemsService.updateItem({ id: item.id, requestBody: data }),
     onSuccess: () => {
       showSuccessToast("Item updated successfully.")
-      reset()
+      reset({
+        title: item.title,
+        description: item.description ?? undefined,
+        topic: item.topic,
+      })
       setIsOpen(false)
     },
     onError: (err: ApiError) => {
@@ -72,6 +82,25 @@ const EditItem = ({ item }: EditItemProps) => {
   const onSubmit: SubmitHandler<ItemUpdateForm> = async (data) => {
     mutation.mutate(data)
   }
+
+  const topicOptions: { value: TopicType; label: string }[] = [
+    { value: "history" as TopicType, label: "History" },
+    { value: "geography" as TopicType, label: "Geography" },
+    { value: "technology" as TopicType, label: "Technology" },
+    { value: "general" as TopicType, label: "General" },
+    { value: "art" as TopicType, label: "Art" },
+    { value: "music" as TopicType, label: "Music" },
+    { value: "literature" as TopicType, label: "Literature" },
+    { value: "sociology" as TopicType, label: "Sociology" },
+    { value: "philosophy" as TopicType, label: "Philosophy" },
+    { value: "physics" as TopicType, label: "Physics" },
+    { value: "chemistry" as TopicType, label: "Chemistry" },
+    { value: "biology" as TopicType, label: "Biology" },
+    { value: "mathematics" as TopicType, label: "Mathematics" },
+  ];
+
+  const topics = createListCollection({ items: topicOptions });
+
 
   return (
     <DialogRoot
@@ -120,6 +149,49 @@ const EditItem = ({ item }: EditItemProps) => {
                   {...register("description")}
                   placeholder="Description"
                   type="text"
+                />
+              </Field>
+               <Field
+                invalid={!!errors.topic} 
+                errorText={errors.topic?.message}
+                label="Topic"
+              >
+                <Controller
+                  name="topic"
+                  control={control}
+                  render={({ field }) => (
+                    <Select.Root
+                      collection={topics} 
+                      value={field.value ? [field.value] : []} 
+                      onValueChange={(details) => {
+                        const selectedValue = details.value[0] as TopicType | undefined;
+                        field.onChange(selectedValue ?? undefined); 
+                      }}
+                      width="100%"
+                    >
+                      <Select.HiddenSelect id={`edit-item-topic-select-hidden-${item.id}`} aria-label="Topic" />
+                      <Select.Control>
+                        <Select.Trigger onBlur={field.onBlur}>
+                          <Select.ValueText placeholder="Select a topic (optional)" />
+                        </Select.Trigger>
+                        <Select.IndicatorGroup>
+                          <Select.Indicator />
+                        </Select.IndicatorGroup>
+                      </Select.Control>
+                      <Portal>
+                        <Select.Positioner style={{ zIndex: 5500 }}>
+                          <Select.Content>
+                            {topics.items.map((topicItem) => ( 
+                              <Select.Item item={topicItem} key={topicItem.value}>
+                                {topicItem.label}
+                                <Select.ItemIndicator />
+                              </Select.Item>
+                            ))}
+                          </Select.Content>
+                        </Select.Positioner>
+                      </Portal>
+                    </Select.Root>
+                  )}
                 />
               </Field>
             </VStack>

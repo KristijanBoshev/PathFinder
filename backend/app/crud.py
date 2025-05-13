@@ -1,9 +1,12 @@
 import uuid
+from collections.abc import Sequence
 from typing import Any
 
+from sqlalchemy.sql.expression import func
 from sqlmodel import Session, select
 
 from app.core.security import get_password_hash, verify_password
+from app.enums import TopicType
 from app.models import Item, ItemCreate, User, UserCreate, UserUpdate
 
 
@@ -52,3 +55,14 @@ def create_item(*, session: Session, item_in: ItemCreate, owner_id: uuid.UUID) -
     session.commit()
     session.refresh(db_item)
     return db_item
+
+
+def fetch_questions(*, session: Session) -> dict[str, Sequence[Item]]:
+    questions_by_topic = {}
+    for topic in TopicType:
+        statement = (
+            select(Item).where(Item.topic == topic).order_by(func.random()).limit(5)
+        )
+        questions_by_topic[topic.value] = session.exec(statement).all()
+
+    return questions_by_topic
