@@ -1,0 +1,15 @@
+export enum TopicType {
+  HISTORY = "history",
+  GEOGRAPHY = "geography",
+  TECHNOLOGY = "technology",
+  GENERAL = "general",
+  ART = "art",
+  MUSIC = "music",
+  LITERATURE = "literature",
+  SOCIOLOGY = "sociology",
+  PHILOSOPHY = "philosophy",
+  PHYSICS = "physics",
+  CHEMISTRY = "chemistry",
+  BIOLOGY = "biology",
+  MATHEMATICS = "mathematics",
+}
