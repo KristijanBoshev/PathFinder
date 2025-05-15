@@ -2,15 +2,22 @@ import uuid
 from collections.abc import Sequence
 from typing import Any
 
+from openai import OpenAI
 from sqlalchemy.sql.expression import func
 from sqlmodel import Session, select
 
+from app.core.config import settings
 from app.core.security import get_password_hash, verify_password
 from app.enums import TopicType
+from app.models import (
+    Item,
+    ItemCreate,
+    QuestionsAndAnswers,
+    User,
+    UserCreate,
+    UserUpdate,
+)
 
-from app.models import Item, ItemCreate, QuestionsAndAnswers, User, UserCreate, UserUpdate
-from openai import OpenAI
-from app.core.config import settings
 
 def create_user(*, session: Session, user_create: UserCreate) -> User:
     db_obj = User.model_validate(
@@ -70,9 +77,9 @@ def fetch_questions(*, session: Session) -> dict[str, Sequence[Item]]:
     return questions_by_topic
 
 
-def openai_response(*, payload: QuestionsAndAnswers) -> str:
+def openai_response(*, payload: QuestionsAndAnswers) -> str | None:
     client = OpenAI(api_key=settings.OPENAI_API_KEY)
-    
+
     prompt = "You are a quiz moderator with a fun and engaging tone. Your task is to review the following Q&A pairs and evaluate their accuracy. For each Q&A pair, please check the truthfulness of the answer based on the provided question and topic. \
         After reviewing all pairs, you will need to provide feedback and calculate the overall score for each topic.Here are the Q&A pairs:"
 
@@ -86,7 +93,7 @@ def openai_response(*, payload: QuestionsAndAnswers) -> str:
     3. Provide the scores for all topics. For each topic, show the percentage of truthful answers (e.g., "AI: 80% truthful answers").
     4. Based on your evaluation of the Q&A pairs, suggest the most suitable career path for the user. Choose a single word career path, such as "doctor", "engineer", "artist", etc.
     5. Finally, provide a fun congratulatory message with a quiz-like tone, e.g., "Congratulations! Your score was X%. Based on your answers, a career in [chosen career path] seems to be a perfect fit for you!"
-    """    
+    """
     completion = client.chat.completions.create(
         model="gpt-4.1-mini",
         messages=[
@@ -96,9 +103,9 @@ def openai_response(*, payload: QuestionsAndAnswers) -> str:
             }
         ],
     )
-    
+
     model_response = completion.choices[0].message.content
-    
+
     return model_response
 
-    
+
