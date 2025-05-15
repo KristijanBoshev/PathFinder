@@ -5,8 +5,10 @@ from fastapi import APIRouter, HTTPException
 from sqlmodel import func, select
 
 from app.api.deps import CurrentUser, SessionDep
+
 from app.crud import fetch_questions, openai_response
 from app.models import Item, ItemCreate, ItemPublic, ItemsPublic, ItemUpdate, Message, QuestionsAndAnswers
+
 
 router = APIRouter(prefix="/items", tags=["items"])
 
@@ -127,6 +129,7 @@ def start_quizz(session: SessionDep) -> list[Item]:
     return all_questions
 
 
+
 @router.post("/quizzes/submit")
 def submit_quizz(payload: QuestionsAndAnswers) -> str:
     """
@@ -137,3 +140,4 @@ def submit_quizz(payload: QuestionsAndAnswers) -> str:
         raise HTTPException(status_code=500, detail="Error processing request")
     
     return response
+
