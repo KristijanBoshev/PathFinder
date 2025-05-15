@@ -107,5 +107,3 @@ def openai_response(*, payload: QuestionsAndAnswers) -> str | None:
     model_response = completion.choices[0].message.content
 
     return model_response
-
-

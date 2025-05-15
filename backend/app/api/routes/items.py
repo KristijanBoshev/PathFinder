@@ -135,7 +135,6 @@ def start_quizz(session: SessionDep) -> list[Item]:
     return all_questions
 
 
-
 @router.post("/quizzes/submit")
 def submit_quizz(payload: QuestionsAndAnswers) -> str:
     """
@@ -146,4 +145,3 @@ def submit_quizz(payload: QuestionsAndAnswers) -> str:
         raise HTTPException(status_code=500, detail="Error processing request")
 
     return response
-
