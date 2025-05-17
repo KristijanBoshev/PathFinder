@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { type SubmitHandler, useForm } from "react-hook-form"
+import { Controller, type SubmitHandler, useForm } from "react-hook-form"
 
 import {
   Button,
@@ -8,6 +8,9 @@ import {
   Input,
   Text,
   VStack,
+  createListCollection,
+  Portal,
+  Select
 } from "@chakra-ui/react"
 import { useState } from "react"
 import { FaPlus } from "react-icons/fa"
@@ -26,6 +29,7 @@ import {
   DialogTrigger,
 } from "../ui/dialog"
 import { Field } from "../ui/field"
+import { TopicType } from "@/client/enums"
 
 const AddItem = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -35,6 +39,7 @@ const AddItem = () => {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors, isValid, isSubmitting },
   } = useForm<ItemCreate>({
     mode: "onBlur",
@@ -42,6 +47,7 @@ const AddItem = () => {
     defaultValues: {
       title: "",
       description: "",
+      topic: undefined,
     },
   })
 
@@ -65,6 +71,13 @@ const AddItem = () => {
     mutation.mutate(data)
   }
 
+  const topics = createListCollection({
+    items: Object.values(TopicType).map((topic) => ({
+      label: topic,
+      value: topic,
+    })),
+  })
+
   return (
     <DialogRoot
       size={{ base: "xs", md: "md" }}
@@ -78,12 +91,12 @@ const AddItem = () => {
           Add Item
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent style={{ overflow: "visible", zIndex: 1400 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>
             <DialogTitle>Add Item</DialogTitle>
           </DialogHeader>
-          <DialogBody>
+          <DialogBody style={{ overflow: "visible" }}>
             <Text mb={4}>Fill in the details to add a new item.</Text>
             <VStack gap={4}>
               <Field
@@ -114,6 +127,50 @@ const AddItem = () => {
                   type="text"
                 />
               </Field>
+              <Field
+                required
+                invalid={!!errors.topic}
+                errorText={errors.topic?.message}
+                label="Topic"
+              >
+                <Controller
+                  name="topic"
+                  control={control}
+                  rules={{ required: "Topic is required." }}
+                  render={({ field }) => (
+                    <Select.Root
+                      collection={topics}
+                      value={field.value ? [field.value] : []}
+                      onValueChange={(details) => {
+                        const selectedValue = details.value[0] || "";
+                        field.onChange(selectedValue);
+                      }}
+                    >
+                      <Select.HiddenSelect id="topic-select-hidden-controller" aria-label="Topic" />
+                      <Select.Control>
+                        <Select.Trigger onBlur={field.onBlur}> 
+                          <Select.ValueText placeholder="Select a topic" />
+                        </Select.Trigger>
+                        <Select.IndicatorGroup>
+                          <Select.Indicator />
+                        </Select.IndicatorGroup>
+                      </Select.Control>
+                      <Portal>
+                        <Select.Positioner style={{ zIndex: 5500 }}>
+                          <Select.Content>
+                            {topics.items.map((topicItem) => (
+                              <Select.Item item={topicItem} key={topicItem.value}>
+                                {topicItem.label}
+                                <Select.ItemIndicator />
+                              </Select.Item>
+                            ))}
+                          </Select.Content>
+                        </Select.Positioner>
+                      </Portal>
+                    </Select.Root>
+                  )}
+                />
+              </Field>
             </VStack>
           </DialogBody>
 
@@ -123,6 +180,10 @@ const AddItem = () => {
                 variant="subtle"
                 colorPalette="gray"
                 disabled={isSubmitting}
+                onClick={() => {
+                  reset();
+                  setIsOpen(false);
+                }}
               >
                 Cancel
               </Button>
@@ -130,8 +191,7 @@ const AddItem = () => {
             <Button
               variant="solid"
               type="submit"
-              disabled={!isValid}
-              loading={isSubmitting}
+              disabled={!isValid || isSubmitting}
             >
               Save
             </Button>

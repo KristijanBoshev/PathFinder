@@ -1,7 +1,11 @@
 import uuid
 
+import sqlalchemy as sa
 from pydantic import EmailStr
+from sqlalchemy.dialects.postgresql import ENUM
 from sqlmodel import Field, Relationship, SQLModel
+
+from app.enums import TopicType
 
 
 # Shared properties
@@ -64,12 +68,16 @@ class ItemBase(SQLModel):
 
 # Properties to receive on item creation
 class ItemCreate(ItemBase):
-    pass
+    topic: TopicType
 
 
 # Properties to receive on item update
 class ItemUpdate(ItemBase):
     title: str | None = Field(default=None, min_length=1, max_length=255)  # type: ignore
+    description: str | None = Field(
+        default=None, max_length=255
+    )  # Ensure description can also be updated
+    topic: TopicType | None = None
 
 
 # Database model, database table inferred from class name
@@ -79,12 +87,18 @@ class Item(ItemBase, table=True):
         foreign_key="user.id", nullable=False, ondelete="CASCADE"
     )
     owner: User | None = Relationship(back_populates="items")
+    topic: TopicType = Field(
+        sa_column=sa.Column(
+            ENUM(TopicType, name="topictype_enum", create_type=True),
+        )
+    )
 
 
 # Properties to return via API, id is always required
 class ItemPublic(ItemBase):
     id: uuid.UUID
     owner_id: uuid.UUID
+    topic: TopicType
 
 
 class ItemsPublic(SQLModel):
@@ -111,3 +125,13 @@ class TokenPayload(SQLModel):
 class NewPassword(SQLModel):
     token: str
     new_password: str = Field(min_length=8, max_length=40)
+
+
+class QAPair(SQLModel):
+    question: str
+    answer: str
+    topic: TopicType
+
+
+class QuestionsAndAnswers(SQLModel):
+    payload: list[QAPair]

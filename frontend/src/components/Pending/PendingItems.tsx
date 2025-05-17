@@ -8,6 +8,7 @@ const PendingItems = () => (
         <Table.ColumnHeader w="sm">ID</Table.ColumnHeader>
         <Table.ColumnHeader w="sm">Title</Table.ColumnHeader>
         <Table.ColumnHeader w="sm">Description</Table.ColumnHeader>
+        <Table.ColumnHeader w="sm">Topic</Table.ColumnHeader> 
         <Table.ColumnHeader w="sm">Actions</Table.ColumnHeader>
       </Table.Row>
     </Table.Header>
@@ -21,6 +22,9 @@ const PendingItems = () => (
             <SkeletonText noOfLines={1} />
           </Table.Cell>
           <Table.Cell>
+            <SkeletonText noOfLines={1} />
+          </Table.Cell>
+          <Table.Cell> 
             <SkeletonText noOfLines={1} />
           </Table.Cell>
           <Table.Cell>
