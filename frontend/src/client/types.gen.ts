@@ -62,6 +62,16 @@ export type PrivateUserCreate = {
     is_verified?: boolean;
 };
 
+export type QAPair = {
+    question: string;
+    answer: string;
+    topic: TopicType;
+};
+
+export type QuestionsAndAnswers = {
+    payload: Array<QAPair>;
+};
+
 export type Token = {
     access_token: string;
     token_type?: string;
@@ -156,6 +166,12 @@ export type ItemsDeleteItemData = {
 export type ItemsDeleteItemResponse = (Message);
 
 export type ItemsStartQuizzResponse = (Array<Item>);
+
+export type ItemsSubmitQuizzData = {
+    requestBody: QuestionsAndAnswers;
+};
+
+export type ItemsSubmitQuizzResponse = (string);
 
 export type LoginLoginAccessTokenData = {
     formData: Body_login_login_access_token;
