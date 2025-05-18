@@ -12,6 +12,7 @@ import {createFileRoute} from "@tanstack/react-router";
 import {useState} from "react";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {ItemsService} from "@/client";
+import {MarkdownRenderer} from "@/components/ui/markdown";
 
 export const Route = createFileRoute("/_layout/quiz")({
   component: Quiz,
@@ -123,6 +124,8 @@ function Quiz() {
                   ) : (
                     <Button colorPalette="yellow"
                             onClick={() => mutation.mutate()}
+                            loading={mutation.isPending}
+                            loadingText="Се процесира..."
                     >
                       Заврши го квизот
                     </Button>
@@ -141,8 +144,9 @@ function Quiz() {
               bg={result.type === "success" ? "green.100" : "red.100"}
               color={result.type === "success" ? "green.800" : "red.800"}
               fontWeight="medium"
+              className="markdown-result"
             >
-              {result.message}
+              <MarkdownRenderer>{result.message}</MarkdownRenderer>
             </Box>
           )}
         </Box>
