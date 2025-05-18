@@ -70,7 +70,10 @@ def fetch_questions(*, session: Session, n_items: int) -> dict[str, Sequence[Ite
     questions_by_topic = {}
     for topic in TopicType:
         statement = (
-            select(Item).where(Item.topic == topic).order_by(func.random()).limit(n_items)
+            select(Item)
+            .where(Item.topic == topic)
+            .order_by(func.random())
+            .limit(n_items)
         )
         questions_by_topic[topic.value] = session.exec(statement).all()
 
