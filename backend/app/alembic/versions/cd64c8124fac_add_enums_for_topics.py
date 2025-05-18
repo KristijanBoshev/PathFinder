@@ -18,6 +18,18 @@ depends_on = None
 
 
 def upgrade():
+    # First check if the topic column exists
+    connection = op.get_bind()
+    inspector = sa.inspect(connection)
+    columns = inspector.get_columns('item')
+    column_names = [column['name'] for column in columns]
+    
+    # Create topic column if it doesn't exist
+    if 'topic' not in column_names:
+        op.add_column('item', sa.Column('topic', sa.VARCHAR(length=255), nullable=True))
+        op.execute("UPDATE item SET topic = 'GENERAL'")
+        op.alter_column('item', 'topic', nullable=False)
+        
     # Create the enum type
     sa.Enum(
         'HISTORY', 'GEOGRAPHY', 'TECHNOLOGY', 'GENERAL', 'ART', 'MUSIC',
