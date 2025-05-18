@@ -29,7 +29,7 @@ function UserSettings() {
   }
 
   return (
-    <Container maxW="full">
+    <Container maxW="7xl">
       <Heading size="lg" textAlign={{ base: "center", md: "left" }} py={12}>
         User Settings
       </Heading>

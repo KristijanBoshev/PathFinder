@@ -97,8 +97,8 @@ export const DarkMode = React.forwardRef<HTMLSpanElement, SpanProps>(
         color="fg"
         display="contents"
         className="chakra-theme dark"
-        colorPalette="gray"
-        colorScheme="dark"
+        colorPalette="yellow"
+        colorScheme="yellow"
         ref={ref}
         {...props}
       />

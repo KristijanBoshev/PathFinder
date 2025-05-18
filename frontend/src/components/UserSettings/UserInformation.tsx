@@ -7,9 +7,9 @@ import {
   Input,
   Text,
 } from "@chakra-ui/react"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useState } from "react"
-import { type SubmitHandler, useForm } from "react-hook-form"
+import {useMutation, useQueryClient} from "@tanstack/react-query"
+import {useState} from "react"
+import {type SubmitHandler, useForm} from "react-hook-form"
 
 import {
   type ApiError,
@@ -19,20 +19,20 @@ import {
 } from "@/client"
 import useAuth from "@/hooks/useAuth"
 import useCustomToast from "@/hooks/useCustomToast"
-import { emailPattern, handleError } from "@/utils"
-import { Field } from "../ui/field"
+import {emailPattern, handleError} from "@/utils"
+import {Field} from "../ui/field"
 
 const UserInformation = () => {
   const queryClient = useQueryClient()
-  const { showSuccessToast } = useCustomToast()
+  const {showSuccessToast} = useCustomToast()
   const [editMode, setEditMode] = useState(false)
-  const { user: currentUser } = useAuth()
+  const {user: currentUser, logout} = useAuth()
   const {
     register,
     handleSubmit,
     reset,
     getValues,
-    formState: { isSubmitting, errors, isDirty },
+    formState: {isSubmitting, errors, isDirty},
   } = useForm<UserPublic>({
     mode: "onBlur",
     criteriaMode: "all",
@@ -48,7 +48,7 @@ const UserInformation = () => {
 
   const mutation = useMutation({
     mutationFn: (data: UserUpdateMe) =>
-      UsersService.updateUserMe({ requestBody: data }),
+      UsersService.updateUserMe({requestBody: data}),
     onSuccess: () => {
       showSuccessToast("User updated successfully.")
     },
@@ -71,19 +71,19 @@ const UserInformation = () => {
 
   return (
     <>
-      <Container maxW="full">
+      <Container maxW="7xl">
         <Heading size="sm" py={4}>
           User Information
         </Heading>
         <Box
-          w={{ sm: "full", md: "sm" }}
+          w={{sm: "full", md: "sm"}}
           as="form"
           onSubmit={handleSubmit(onSubmit)}
         >
           <Field label="Full name">
             {editMode ? (
               <Input
-                {...register("full_name", { maxLength: 30 })}
+                {...register("full_name", {maxLength: 30})}
                 type="text"
                 size="md"
               />
@@ -126,18 +126,20 @@ const UserInformation = () => {
               onClick={toggleEditMode}
               type={editMode ? "button" : "submit"}
               loading={editMode ? isSubmitting : false}
+              colorPalette="yellow"
               disabled={editMode ? !isDirty || !getValues("email") : false}
             >
-              {editMode ? "Save" : "Edit"}
+              {editMode ? "Зачувај" : "Измени"}
             </Button>
+            {!editMode &&<Button colorPalette="yellow" variant="solid" onClick={logout}>Одјава</Button>}
             {editMode && (
               <Button
                 variant="subtle"
-                colorPalette="gray"
+                colorPalette="red"
                 onClick={onCancel}
                 disabled={isSubmitting}
               >
-                Cancel
+                Откажи
               </Button>
             )}
           </Flex>

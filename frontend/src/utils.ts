@@ -3,7 +3,7 @@ import useCustomToast from "./hooks/useCustomToast"
 
 export const emailPattern = {
   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-  message: "Invalid email address",
+  message: "Невалидна е-маил адреса",
 }
 
 export const namePattern = {
@@ -15,12 +15,12 @@ export const passwordRules = (isRequired = true) => {
   const rules: any = {
     minLength: {
       value: 8,
-      message: "Password must be at least 8 characters",
+      message: "Лозинката мора да има барем 8 карактери",
     },
   }
 
   if (isRequired) {
-    rules.required = "Password is required"
+    rules.required = "Лозинката е задолжителна"
   }
 
   return rules
@@ -33,12 +33,12 @@ export const confirmPasswordRules = (
   const rules: any = {
     validate: (value: string) => {
       const password = getValues().password || getValues().new_password
-      return value === password ? true : "The passwords do not match"
+      return value === password ? true : "Лозинките не се совпаѓаат"
     },
   }
 
   if (isRequired) {
-    rules.required = "Password confirmation is required"
+    rules.required = "Задолжително поле"
   }
 
   return rules
