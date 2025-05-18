@@ -66,11 +66,11 @@ def create_item(*, session: Session, item_in: ItemCreate, owner_id: uuid.UUID) -
     return db_item
 
 
-def fetch_questions(*, session: Session) -> dict[str, Sequence[Item]]:
+def fetch_questions(*, session: Session, n_items: int) -> dict[str, Sequence[Item]]:
     questions_by_topic = {}
     for topic in TopicType:
         statement = (
-            select(Item).where(Item.topic == topic).order_by(func.random()).limit(5)
+            select(Item).where(Item.topic == topic).order_by(func.random()).limit(n_items)
         )
         questions_by_topic[topic.value] = session.exec(statement).all()
 
