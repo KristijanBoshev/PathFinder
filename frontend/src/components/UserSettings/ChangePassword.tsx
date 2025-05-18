@@ -53,21 +53,21 @@ const ChangePassword = () => {
               type="current_password"
               startElement={<FiLock />}
               {...register("current_password", passwordRules())}
-              placeholder="Current Password"
+              placeholder="Вашата лозинка"
               errors={errors}
             />
             <PasswordInput
               type="new_password"
               startElement={<FiLock />}
               {...register("new_password", passwordRules())}
-              placeholder="New Password"
+              placeholder="Нова лозинка"
               errors={errors}
             />
             <PasswordInput
               type="confirm_password"
               startElement={<FiLock />}
               {...register("confirm_password", confirmPasswordRules(getValues))}
-              placeholder="Confirm Password"
+              placeholder="Потврдете ја новата лозинка"
               errors={errors}
             />
           </VStack>
@@ -78,7 +78,7 @@ const ChangePassword = () => {
             loading={isSubmitting}
             disabled={!isValid}
           >
-            Save
+            Зачувај
           </Button>
         </Box>
       </Container>
