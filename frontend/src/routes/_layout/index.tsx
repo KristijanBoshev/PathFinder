@@ -13,17 +13,24 @@ function Dashboard() {
     <>
       <Container maxW="7xl">
         <Flex flexDirection="column" gap={20}>
-          <IntroSection/>
+          <Box id="about">
+            <IntroSection />
+          </Box>
           <Flex alignItems="center" justifyContent="center">
             <Box height="2px" width="80%" bg="gray.600" mr={3}/>
           </Flex>
-          <Details/>
+          <Box id="features">
+            <Details />
+          </Box>
           <Flex alignItems="center" justifyContent="center">
             <Box height="2px" width="80%" bg="gray.600" mr={3}/>
           </Flex>
-          <Instructions />
+          <Box id="how-it-works">
+            <Instructions />
+          </Box>
         </Flex>
       </Container>
     </>
   )
 }
+

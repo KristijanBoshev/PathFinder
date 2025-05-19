@@ -1,7 +1,7 @@
 import {Box, Container, Flex, Image, Input, Text} from "@chakra-ui/react"
 import {
   Link as RouterLink,
-  createFileRoute, Link,
+  createFileRoute, Link, useNavigate,
 } from "@tanstack/react-router"
 import {type SubmitHandler, useForm} from "react-hook-form"
 import {FiLock, FiMail} from "react-icons/fi"
@@ -15,6 +15,7 @@ import useAuth from "@/hooks/useAuth"
 import {emailPattern, passwordRules} from "../utils"
 import graduationCap from "../../public/assets/images/pngtree-graduation-hat-png-image_11476784.png";
 import Logo from "../../public/assets/images/logo.png"
+import {useEffect} from "react";
 
 
 export const Route = createFileRoute("/login")({
@@ -23,6 +24,15 @@ export const Route = createFileRoute("/login")({
 
 function Login() {
   const {loginMutation, error, resetError} = useAuth()
+  const {user} = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate({ to: "/" })
+    }
+  }, [user, navigate])
+
   const {
     register,
     handleSubmit,
