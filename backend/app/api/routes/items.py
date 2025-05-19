@@ -119,11 +119,11 @@ def delete_item(
 
 
 @router.get("/quizzes/start")
-def start_quizz(session: SessionDep) -> list[Item]:
+def start_quizz(session: SessionDep, n_items: int) -> list[Item]:
     """
     Fetch questions for quizzes.
     """
-    questions = fetch_questions(session=session)
+    questions = fetch_questions(session=session, n_items=n_items)
     if not questions:
         raise HTTPException(status_code=404, detail="No questions found")
 

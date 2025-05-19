@@ -86,9 +86,9 @@ const AddItem = () => {
       onOpenChange={({ open }) => setIsOpen(open)}
     >
       <DialogTrigger asChild>
-        <Button value="add-item" my={4}>
+        <Button value="add-item" my={4} colorPalette="yellow">
           <FaPlus fontSize="16px" />
-          Add Item
+          Додајте прашање
         </Button>
       </DialogTrigger>
       <DialogContent style={{ overflow: "visible", zIndex: 1400 }}>

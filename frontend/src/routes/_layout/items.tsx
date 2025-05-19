@@ -21,6 +21,8 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "@/components/ui/pagination.tsx"
+import useAuth from "@/hooks/useAuth.ts";
+import { useEffect } from "react"
 
 const itemsSearchSchema = z.object({
   page: z.number().catch(1),
@@ -44,6 +46,13 @@ export const Route = createFileRoute("/_layout/items")({
 function ItemsTable() {
   const navigate = useNavigate({ from: Route.fullPath })
   const { page } = Route.useSearch()
+  const {user} = useAuth();
+
+  useEffect(() => {
+    if (!user?.is_superuser) {
+      navigate({ to: "/" })
+    }
+  }, [user, navigate])
 
   const { data, isLoading, isPlaceholderData } = useQuery({
     ...getItemsQueryOptions({ page }),
@@ -70,9 +79,9 @@ function ItemsTable() {
             <FiSearch />
           </EmptyState.Indicator>
           <VStack textAlign="center">
-            <EmptyState.Title>You don't have any items yet</EmptyState.Title>
+            <EmptyState.Title>Сеуште немате додадено ниту едно прашање</EmptyState.Title>
             <EmptyState.Description>
-              Add a new item to get started
+              Додајте прашања
             </EmptyState.Description>
           </VStack>
         </EmptyState.Content>

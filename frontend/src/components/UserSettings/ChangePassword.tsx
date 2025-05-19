@@ -77,6 +77,7 @@ const ChangePassword = () => {
             type="submit"
             loading={isSubmitting}
             disabled={!isValid}
+            colorPalette="yellow"
           >
             Зачувај
           </Button>

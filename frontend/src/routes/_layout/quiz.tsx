@@ -1,10 +1,11 @@
 import {
   Box,
-  Button,
+  Button, CloseButton,
   Container,
+  Dialog,
   Flex,
   HStack,
-  Input,
+  Input, Portal,
   Progress,
   Text,
 } from "@chakra-ui/react";
@@ -13,19 +14,26 @@ import {useState} from "react";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {ItemsService} from "@/client";
 import {MarkdownRenderer} from "@/components/ui/markdown";
+import {usePDF} from "react-to-pdf";
 
 export const Route = createFileRoute("/_layout/quiz")({
   component: Quiz,
+  validateSearch: (search: {nItems?: string}) => {
+    return { nItems: Number(search.nItems) || 5 };
+  },
 });
 
 function Quiz() {
+  const { nItems } = Route.useSearch();
+
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [stage, setStage] = useState<number>(0);
   const [result, setResult] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const { toPDF, targetRef } = usePDF({filename: 'page.pdf'});
 
   const {data, isLoading} = useQuery({
     queryKey: ["quiz", "start"],
-    queryFn: () => ItemsService.startQuizz(),
+    queryFn: () => ItemsService.startQuizz({nItems}),
   });
 
   const items = data ?? [];
@@ -146,11 +154,36 @@ function Quiz() {
               fontWeight="medium"
               className="markdown-result"
             >
-              <MarkdownRenderer>{result.message}</MarkdownRenderer>
+              <Dialog.Root
+                placement="center"
+                motionPreset="slide-in-bottom"
+              >
+                <Dialog.Trigger asChild>
+                  {result.type === "success" ? <Button variant="outline">Види ги резултатите</Button> : <Text>{result.message}</Text>}
+                </Dialog.Trigger>
+                <Portal>
+                  <Dialog.Backdrop />
+                  <Dialog.Positioner>
+                    <Dialog.Content>
+                      <Dialog.Header>
+                        <Dialog.Title>Ова е нашето мислење според одговорите што ги внесовте</Dialog.Title>
+                      </Dialog.Header>
+                      <Dialog.Body ref={targetRef}>
+                        <MarkdownRenderer>{result.message}</MarkdownRenderer>
+                      </Dialog.Body>
+                      <Dialog.Footer>
+                        <Button onClick={() => toPDF()}>Експортирај во PDF</Button>
+                      </Dialog.Footer>
+                      <Dialog.CloseTrigger asChild>
+                        <CloseButton size="sm" />
+                      </Dialog.CloseTrigger>
+                    </Dialog.Content>
+                  </Dialog.Positioner>
+                </Portal>
+              </Dialog.Root>
             </Box>
           )}
         </Box>
-
 
       </Flex>
     </Container>

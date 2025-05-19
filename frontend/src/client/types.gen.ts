@@ -165,6 +165,10 @@ export type ItemsDeleteItemData = {
 
 export type ItemsDeleteItemResponse = (Message);
 
+export type ItemsStartQuizzData = {
+    nItems: number;
+};
+
 export type ItemsStartQuizzResponse = (Array<Item>);
 
 export type ItemsSubmitQuizzData = {
