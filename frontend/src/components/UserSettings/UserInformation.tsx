@@ -131,7 +131,18 @@ const UserInformation = () => {
             >
               {editMode ? "Зачувај" : "Измени"}
             </Button>
-            {!editMode &&<Button colorPalette="yellow" variant="solid" onClick={logout}>Одјава</Button>}
+            {!editMode && (
+              <Button
+                colorPalette="yellow"
+                variant="solid"
+                onClick={() => {
+                  logout();
+                  window.location.href = "/";
+                }}
+              >
+                Одјава
+              </Button>
+            )}
             {editMode && (
               <Button
                 variant="subtle"
